@@ -4,6 +4,28 @@ A web-based inventory management system.
 
 ## Setup and Running
 
+### Option 1: Setup from GitHub
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/WMG_Invent.git
+cd WMG_Invent
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the application:
+```bash
+python run.py
+```
+
+### Option 2: Manual Setup
+
+If you have the code already:
+
 1. Install dependencies:
 ```bash
 pip install -r requirements.txt
