@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Orders{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Manage Orders</h1>
+        <a href="{{ url_for('products.create') }}" 
+           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            Add Product
+        </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="mb-6">
+        <div class="flex flex-wrap gap-2">
+            <h3 class="text-lg font-semibold w-full mb-2">Filter by Status:</h3>
+            <a href="{{ url_for('admin.orders') }}" 
+               class="px-4 py-2 rounded {% if not request.args.get('status') %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">
+                All
+            </a>
+            {% for status in ['pending', 'approved', 'completed', 'cancelled'] %}
+            <a href="{{ url_for('admin.orders', status=status) }}" 
+               class="px-4 py-2 rounded {% if request.args.get('status') == status %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">
+                {{ status|title }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for order in orders.items %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">#{{ order.id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ order.user.username }}</td>
+                    <td class="px-6 py-4">{{ order.product.name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ order.quantity }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 rounded text-sm 
+                            {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                            {% elif order.status == 'approved' %}bg-blue-100 text-blue-800
+                            {% elif order.status == 'completed' %}bg-green-100 text-green-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ order.status|title }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% if order.status == 'pending' %}
+                        <form method="POST" action="{{ url_for('orders.update_status', id=order.id) }}" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="status" value="approved">
+                            <button type="submit" class="text-blue-600 hover:underline mr-2">Approve</button>
+                        </form>
+                        {% endif %}
+                        
+                        {% if order.status == 'approved' %}
+                        <form method="POST" action="{{ url_for('orders.update_status', id=order.id) }}" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="status" value="completed">
+                            <button type="submit" class="text-green-600 hover:underline mr-2">Complete</button>
+                        </form>
+                        {% endif %}
+                        
+                        {% if current_user.can_delete_orders() and order.status != 'completed' %}
+                        <form method="POST" action="{{ url_for('orders.delete', id=order.id) }}" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="text-red-600 hover:underline" 
+                                    onclick="return confirm('Are you sure you want to delete this order?')">
+                                Delete
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center">
+        <div class="flex space-x-2">
+            {% if orders.has_prev %}
+            <a href="{{ url_for('admin.orders', page=orders.prev_num, status=request.args.get('status')) }}"
+               class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Previous</a>
+            {% endif %}
+            
+            {% if orders.has_next %}
+            <a href="{{ url_for('admin.orders', page=orders.next_num, status=request.args.get('status')) }}"
+               class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

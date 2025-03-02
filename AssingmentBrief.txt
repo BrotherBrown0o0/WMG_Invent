@@ -1,0 +1,43 @@
+Background: An inventory management system (or inventory system) is the process by which you track your goods throughout your entire supply chain, from purchasing to production to end sales. With just a few clicks, customers can browse through a wide range of the products and track their products from the comfort of their homes or while on the go. Another important aspect of inventory management is the vast selection of products available. If you’re holding a lot of inventory in your business, you need to stay efficient and maintain healthy margins. An effective inventory management system exists to help you achieve this. Any company dealing with physical goods must find a solution for managing inventory. In some cases, an Excel or Google Sheets spreadsheet will suffice as a company’s inventory management system. However, many firms opt for dedicated inventory management software designed to boost efficiency and bring costs down. Factors such as your business’s size, complexity, and inventory requirements determine what is the best inventory management system.
+	Here is the basic requirement for the WMGZON:
+	The WMGINVENT is a web-based project. 
+	The WMGINVENT has a well-designed main landing page displaying the different products available and tracking information search. 
+	The WMGINVENT provides an appropriate menu to easily navigate the products from different categories, such as electronics, books, health products, Grocery, home appliances, etc.
+	The WMGINVENT provides an appropriate menu to easily navigate different functions such as live inventory tracking, purchasing management, inventory reporting etc for each product category. Each function offers multiple options which can be defined by user.
+	The WMGINVENT provides detail product information to user when a product is selected. Importantly, the detail product information may vary slightly depending on the category to which each product belongs. 
+	The WMGINVENT management options that allow only authorised users easily and effectively to update stock levels of products or place orders based on their permission. So, you must consider user and permission management.
+	The WMGINVENT can provide various statistical information on products for effective inventory management in an easy-to-understand manner such as using a graphs or tables.
+	The assignment 2 is mainly based on the product category for WMGINVENT you selected from the assignment 1 and you will perform further two tasks individually. 
+	First, you must create an individual report mainly focused on the product category you selected in the assignment 1. 
+	The individual report can use any content from the assignment 1 report which is relevant to your product category and then additionally you will need to improve the content for further requirements and implementation. 
+	Second, based on the final requirements and user interfaces defined in your individual report, you must implement a software at least with minimal functionalities, such as live inventory tracking, purchasing management, inventory reporting etc. which should include the properties of display, insert, update and delete information about your product category.
+	Importantly, you must use Python programming language and Flask web framework for your implementation. 
+	You must include a short introduction. 
+	You can include any content for your product category defined in the assignment 1 report such as the functional requirements, non-functional requirement, user interface, etc. 
+	If necessary, you can improve the content for your product category previously defined in the assignment 1. 
+	You must include a general description to provide information about the WMGINVENT system architecture and product category.
+	To improve the structural view, you must include at least one class diagram related to your product category. 
+	To improve the behavioural view, you must include at least one sequence diagram related to your product category. 
+	To describe your implementation, you must include some important parts of your code and technical implementation detail with some screen captures. 
+	Remember that the code is not included in the total word counts but the description is included. So, put the code inside a table with a caption to make it an easy to recognise or add the code screenshot.  
+	To effectively manage your implementation code, you might include how the code is managed during the implementation. 
+	To verify your implementation code, you must include at least two or more test cases for the functionalities related to your product category using unit test and then provide the test cases’ code and their description. 
+	Remember that the testing code is not included in the total word counts but the description is included. So, put the testing code inside a table with a caption to make it an easy to recognise or add the code screenshot. 
+	To effectively deploy your implementation, you might consider how to configure and deploy your implementation to other machines. 
+	You must include a content that explains the progress of your work. It is about how effectively you evolve your work considering agility, milestones, etc. 
+	You must include a content that explains the current state of development and any future development work that will be required. 
+	The content must be based on the functional, non-functional and user interface requirements, and what you need to improve in future. 
+	You must include a short conclusion. 
+	You can have an appendix section if necessary. Remember it is not included in the total word counts.
+	This is only a proposed report format, but you can change the format if necessary. 
+	Introduction
+	General description
+	Requirements
+	Design
+	Implementation Detail
+	Test Case Design
+	Code Management and Deployment (Optional)
+	Progression of Work
+	Current Status and Future Work
+	Conclusion
+	Appendixes (Optional)

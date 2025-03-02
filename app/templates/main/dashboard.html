@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+
+    {% if current_user.can_manage_stock() %}
+    <!-- Action Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <button onclick="toggleGraph('totalUsers')" class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-colors text-left">
+            <h3 class="text-lg font-semibold text-gray-600">Total Users</h3>
+            <p class="text-3xl font-bold">{{ total_users }}</p>
+        </button>
+        <button onclick="toggleGraph('lowStockItems')" class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-colors text-left">
+            <h3 class="text-lg font-semibold text-gray-600">Low Stock Items</h3>
+            <p class="text-3xl font-bold text-red-600">{{ low_stock_count }}</p>
+        </button>
+        <button onclick="toggleGraph('revenue')" class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-colors text-left">
+            <h3 class="text-lg font-semibold text-gray-600">Revenue</h3>
+            <p class="text-3xl font-bold">${{ "%.2f"|format(revenue) }}</p>
+        </button>
+        <button onclick="toggleGraph('assetValue')" class="bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition-colors text-left">
+            <h3 class="text-lg font-semibold text-gray-600">Asset Value</h3>
+            <p class="text-3xl font-bold">${{ "%.2f"|format(total_value) }}</p>
+        </button>
+    </div>
+
+    <!-- Graph Placeholders -->
+    <div id="totalUsersGraph" class="hidden bg-white p-4 rounded-lg shadow mb-8">
+        <h2 class="text-xl font-bold mb-4">Total Users Graph</h2>
+        <div id="totalUsersChart"></div>
+    </div>
+    <div id="lowStockItemsGraph" class="hidden bg-white p-4 rounded-lg shadow mb-8">
+        <h2 class="text-xl font-bold mb-4">Low Stock Items Graph</h2>
+        <div id="lowStockItemsChart"></div>
+    </div>
+    <div id="revenueGraph" class="hidden bg-white p-4 rounded-lg shadow mb-8">
+        <h2 class="text-xl font-bold mb-4">Revenue Graph</h2>
+        <div id="revenueChart"></div>
+    </div>
+    <div id="assetValueGraph" class="hidden bg-white p-4 rounded-lg shadow mb-8">
+        <h2 class="text-xl font-bold mb-4">Asset Value Graph</h2>
+        <div id="assetValueChart"></div>
+    </div>
+    {% endif %}
+
+    {% if current_user.can_manage_stock() %}
+    <!-- Stock Level Chart -->
+    <div class="bg-white p-4 rounded-lg shadow mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold mb-4">Inventory Levels</h2>
+            <a href="{{ url_for('admin.inventory') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                Manage All Inventory
+            </a>
+        </div>
+        <div class="overflow-x-auto">
+            <div id="stockChart"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if current_user.can_manage_users() %}
+    <!-- User Management Section -->
+    <div class="bg-white p-4 rounded-lg shadow mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold mb-4">User Management</h2>
+            <a href="{{ url_for('admin.users') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                Manage All Users
+            </a>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold mb-4">Recent Users</h3>
+            <div class="space-y-2">
+                {% for user in recent_users[:5] %}
+                <div class="flex justify-between items-center border-b pb-2">
+                    <div>
+                        <p class="font-semibold">{{ user.username }}</p>
+                        <p class="text-sm text-gray-600">{{ user.email }}</p>
+                    </div>
+                    <span class="px-2 py-1 rounded bg-blue-100 text-blue-800">{{ user.role }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Orders Section -->
+    <div class="bg-white p-4 rounded-lg shadow mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold mb-4">Recent Orders</h2>
+            <a href="{{ url_for('admin.orders') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                Manage All Orders
+            </a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Order ID</th>
+                        <th class="px-4 py-2">Product</th>
+                        <th class="px-4 py-2">Quantity</th>
+                        <th class="px-4 py-2">Status</th>
+                        <th class="px-4 py-2">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in user_orders[:5] %}
+                    <tr>
+                        <td class="border px-4 py-2">#{{ order.id }}</td>
+                        <td class="border px-4 py-2">{{ order.product.name }}</td>
+                        <td class="border px-4 py-2">{{ order.quantity }}</td>
+                        <td class="border px-4 py-2">{{ order.status }}</td>
+                        <td class="border px-4 py-2">{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if current_user.can_manage_stock() %}
+    <!-- Stock Orders Section -->
+    <div class="bg-white p-4 rounded-lg shadow mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold mb-4">Stock Orders</h2>
+            <a href="{{ url_for('admin.stock_orders') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                Manage All Stock
+            </a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Order ID</th>
+                        <th class="px-4 py-2">Product</th>
+                        <th class="px-4 py-2">Quantity</th>
+                        <th class="px-4 py-2">Status</th>
+                        <th class="px-4 py-2">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock_order in stock_orders[:5] %}
+                    <tr>
+                        <td class="border px-4 py-2">#{{ stock_order.id }}</td>
+                        <td class="border px-4 py-2">{{ stock_order.product.name }}</td>
+                        <td class="border px-4 py-2">{{ stock_order.quantity }}</td>
+                        <td class="border px-4 py-2">{{ stock_order.status }}</td>
+                        <td class="border px-4 py-2">{{ stock_order.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function toggleGraph(graphId) {
+    // Get the selected graph
+    const selectedGraph = document.getElementById(`${graphId}Graph`);
+
+    // If the graph is already visible, hide it
+    if (!selectedGraph.classList.contains('hidden')) {
+        selectedGraph.classList.add('hidden');
+        return;
+    }
+
+    // Hide all graphs
+    document.getElementById('totalUsersGraph').classList.add('hidden');
+    document.getElementById('lowStockItemsGraph').classList.add('hidden');
+    document.getElementById('revenueGraph').classList.add('hidden');
+    document.getElementById('assetValueGraph').classList.add('hidden');
+
+    // Show the selected graph
+    if (selectedGraph) {
+        selectedGraph.classList.remove('hidden');
+        renderGraph(graphId);
+    }
+}
+
+function renderGraph(graphId) {
+    switch (graphId) {
+        case 'totalUsers':
+            renderTotalUsersGraph();
+            break;
+        case 'lowStockItems':
+            renderLowStockItemsGraph();
+            break;
+        case 'revenue':
+            renderRevenueGraph();
+            break;
+        case 'assetValue':
+            renderAssetValueGraph();
+            break;
+    }
+}
+
+function renderTotalUsersGraph() {
+    const data = [{
+        type: 'line',
+        x: ['Total Users'],
+        y: [{{ total_users }}],
+        marker: { color: '#3b82f6' }
+    }];
+    const layout = { title: 'Total Users', yaxis: { title: 'Count' } };
+    Plotly.newPlot('totalUsersChart', data, layout);
+}
+
+function renderLowStockItemsGraph() {
+    const data = [{
+        type: 'line',
+        x: ['Low Stock Items'],
+        y: [{{ low_stock_count }}],
+        marker: { color: '#ef4444' }
+    }];
+    const layout = { title: 'Low Stock Items', yaxis: { title: 'Count' } };
+    Plotly.newPlot('lowStockItemsChart', data, layout);
+}
+
+function renderRevenueGraph() {
+    const data = [{
+        type: 'line',
+        x: ['Revenue'],
+        y: [{{ revenue }}],
+        marker: { color: '#10b981' }
+    }];
+    const layout = { title: 'Revenue', yaxis: { title: 'Amount ($)' } };
+    Plotly.newPlot('revenueChart', data, layout);
+}
+
+function renderAssetValueGraph() {
+    const data = [{
+        type: 'line',
+        x: ['Asset Value'],
+        y: [{{ total_value }}],
+        marker: { color: '#8b5cf6' }
+    }];
+    const layout = { title: 'Asset Value', yaxis: { title: 'Value ($)' } };
+    Plotly.newPlot('assetValueChart', data, layout);
+}
+</script>
+
+{% if current_user.can_manage_stock() %}
+<!-- Include Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endif %}
+
+{% if current_user.can_manage_stock() %}
+<!-- Hidden element to store chart data -->
+<div id="chartData" style="display: none;">{{ chart_json | safe }}</div>
+{% endif %}
+{% endblock %} 

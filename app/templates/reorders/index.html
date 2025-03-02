@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Reorders{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-6">Reorders</h1>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700">Product</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700">Quantity</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700">Status</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 font-medium text-gray-700">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reorder in reorders %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ reorder.product.name }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ reorder.quantity }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">{{ reorder.status }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        {% if reorder.status == 'pending' %}
+                        <form method="POST" action="{{ url_for('reorders.approve', id=reorder.id) }}" class="inline">
+                            <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Approve</button>
+                        </form>
+                        {% endif %}
+                        {% if reorder.status == 'approved' %}
+                        <form method="POST" action="{{ url_for('reorders.complete', id=reorder.id) }}" class="inline">
+                            <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Complete</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

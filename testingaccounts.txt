@@ -1,0 +1,40 @@
+WMGINVENT Testing Accounts
+=========================
+
+1. Basic User Account
+--------------------
+Username: basic_user
+Email: user@test.com
+Password: user123
+Role: user
+Permissions: 
+- View products and product listings
+- Track their own orders
+- View their dashboard with recent orders
+
+2. Admin Account
+---------------
+Username: admin_user
+Email: admin@test.com
+Password: admin123
+Role: admin
+Permissions:
+- All basic user permissions
+- Manage products (add, edit, delete)
+- Manage inventory levels
+- View and manage orders
+- Access admin dashboard
+- View inventory statistics
+
+3. Site Admin Account
+--------------------
+Username: site_admin
+Email: siteadmin@test.com
+Password: siteadmin123
+Role: site_admin
+Permissions:
+- All admin permissions
+- Manage user accounts
+- Set user permission levels
+- Delete orders
+- Full system access 
