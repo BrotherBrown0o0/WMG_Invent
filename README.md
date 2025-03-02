@@ -2,9 +2,18 @@
 
 A web-based inventory management system.
 
+## Prerequisites
+
+Before setting up the project, ensure you have the following installed:
+- Python 3.x
+- pip (Python package manager)
+- Git (for Option 1 only)
+
 ## Setup and Running
 
 ### Option 1: Setup from GitHub
+
+Open a terminal or command prompt and run the following commands:
 
 1. Clone the repository:
 ```bash
@@ -24,7 +33,7 @@ python run.py
 
 ### Option 2: Manual Setup
 
-If you have the code already:
+If you have the code already, open a terminal or command prompt in the project directory and run:
 
 1. Install dependencies:
 ```bash
@@ -40,10 +49,10 @@ The application will be available at `http://localhost:5000`
 
 ## Testing
 
-To run the unit tests:
+To run the unit tests, open a terminal in the project directory and run:
 ```bash
 python -m unittest tests/test_app.py -v
-``` 
+```
 
 ## User Roles
 
