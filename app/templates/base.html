@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for responsive design and character encoding -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title with dynamic block for child templates -->
     <title>{% block title %}{% endblock %} - WMG Inventory Management</title>
+    
+    <!-- CSS and external resources -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="font-[Poppins] bg-gray-50 flex flex-col min-h-screen">
-    <!-- Header -->
+    <!-- Header with navigation -->
     <header class="bg-gray-800 shadow-lg">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
+                <!-- Logo/Site name with link to home -->
                 <div class="flex items-center">
                     <a href="{{ url_for('main.index') }}" class="text-2xl font-bold text-white">
                         WMGInvent
                     </a>
                 </div>
 
-                <!-- Search Bar -->
+                <!-- Search Bar for products -->
                 <div class="flex-grow mx-8">
                     <form action="{{ url_for('products.index') }}" method="GET" class="flex items-center">
                         <input type="text" name="q" placeholder="Search products..." 
@@ -32,7 +37,7 @@
                     </form>
                 </div>
 
-                <!-- Mobile Menu Button -->
+                <!-- Mobile Menu Toggle Button (visible on small screens) -->
                 <div class="md:hidden">
                     <button id="mobileMenuButton" class="text-white focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,9 +46,10 @@
                     </button>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Navigation Links (hidden on mobile) -->
                 <div class="hidden md:flex items-center space-x-8">
                     {% if current_user.is_authenticated %}
+                        <!-- Dashboard Dropdown Menu -->
                         <div class="relative group" onmouseenter="showDashboardDropdown()" onmouseleave="hideDashboardDropdown()">
                             <a href="{{ url_for('main.dashboard') }}" class="text-white hover:text-gray-300 transition-colors">
                                 Dashboard ▼

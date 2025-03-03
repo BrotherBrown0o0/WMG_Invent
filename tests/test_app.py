@@ -7,20 +7,23 @@ from app.models.order import Order
 from app.models.stock_order import StockOrder
 from config import Config
 
+# Test configuration overrides default settings for testing
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    WTF_CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'  # Use in-memory database
+    WTF_CSRF_ENABLED = False                        # Disable CSRF for testing
 
+# Main test case class for the website application
 class WebsiteTestCase(unittest.TestCase):
     def setUp(self):
+        # Create test app and configure test environment
         self.app = create_app(TestConfig)
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client()
 
-        # Create test users
+        # Create test users with different roles
         self.admin = User(username='admin', email='admin@test.com', role='admin')
         self.admin.set_password('adminpass')
         self.customer = User(username='customer', email='customer@test.com', role='customer')
@@ -31,7 +34,7 @@ class WebsiteTestCase(unittest.TestCase):
         db.session.add(self.category)
         db.session.commit()
         
-        # Create test product
+        # Create test product with stock levels
         self.product = Product(
             name='Test Laptop',
             description='A test laptop',
@@ -41,10 +44,12 @@ class WebsiteTestCase(unittest.TestCase):
             category_id=self.category.id
         )
         
+        # Add all test objects to database
         db.session.add_all([self.admin, self.customer, self.product])
         db.session.commit()
 
     def tearDown(self):
+        # Clean up after tests
         db.session.remove()
         db.drop_all()
         self.app_context.pop()

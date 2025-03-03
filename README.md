@@ -1,83 +1,98 @@
 # WMG Inventory Management System
 
-A web-based inventory management system.
+A comprehensive inventory management system built with Flask, designed to help businesses track products, manage stock levels, and process orders efficiently.
 
-## Prerequisites
+## Features
 
-Before setting up the project, ensure you have the following installed:
-- Python 3.x
-- pip (Python package manager)
-- Git (for Option 1 only)
+- **User Authentication**: Secure login and registration system with role-based access control
+- **Product Management**: Add, edit, and delete products with detailed information
+- **Order Processing**: Create and manage customer orders
+- **Stock Level Monitoring**: Automatic tracking of inventory levels
+- **Admin Dashboard**: Visualize sales data and inventory metrics
+- **Reorder Automation**: Automatic reorder suggestions when stock is low
 
-## Setup and Running
+## Project Structure
 
-### Option 1: Setup from GitHub
+The project follows a clean, modular structure:
 
-Open a terminal or command prompt and run the following commands:
+```
+wmg_invent/
+├── app/                    # Application package
+│   ├── models/             # Database models
+│   ├── routes/             # Route blueprints
+│   ├── static/             # Static assets (CSS, JS, images)
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   └── templates/          # HTML templates
+├── instance/               # Instance-specific data
+├── migrations/             # Database migrations
+├── tests/                  # Test suite
+├── config.py               # Configuration settings
+├── requirements.txt        # Project dependencies
+└── run.py                  # Application entry point
+```
+
+## Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/WMG_Invent.git
-cd WMG_Invent
+   ```
+   git clone <repository-url>
+   cd wmg_invent
+   ```
+
+2. Create and activate a virtual environment:
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. Set environment variables:
+   ```
+   set FLASK_APP=run.py  # On Unix/Mac: export FLASK_APP=run.py
+   set FLASK_ENV=development  # On Unix/Mac: export FLASK_ENV=development
+   ```
+
+5. Initialize the database:
+   ```
+   python run.py
+   ```
+
+## Running the Application
+
+Start the development server:
+```
+flask run
 ```
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Run the application:
-```bash
-python run.py
-```
-
-### Option 2: Manual Setup
-
-If you have the code already, open a terminal or command prompt in the project directory and run:
-
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Run the application:
-```bash
-python run.py
-```
-
-The application will be available at `http://localhost:5000`
+Access the application at `http://localhost:5000`
 
 ## Testing
 
-To run the unit tests, open a terminal in the project directory and run:
-```bash
-python -m unittest tests/test_app.py -v
+Run the test suite:
+```
+python -m unittest tests/test_app.py
 ```
 
 ## User Roles
 
-- **Customer**: Can browse products and place orders
-- **Manager**: Can manage products and process orders
-- **Admin**: Full access to all features including user management
-- **Site Admin**: System-level access with additional privileges
+- **Regular User**: Can browse products and place orders
+- **Admin**: Can manage inventory and view orders
+- **Site Admin**: Has full access to all features, including user management
 
-## API Routes
+## Contributing
 
-### Products
-- `GET /products/`: List all products
-- `GET /products/<id>`: View product details
-- `POST /products/create`: Create new product (Admin only)
-- `POST /products/<id>/update`: Update product (Admin only)
-- `POST /products/<id>/delete`: Delete product (Admin only)
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Submit a pull request
 
-### Orders
-- `GET /orders/`: List user's orders
-- `POST /orders/create`: Create new order
-- `GET /orders/<id>`: View order details
-- `POST /orders/<id>/update`: Update order status (Admin only)
+## License
 
-### Stock Management
-- `GET /admin/stock-orders/`: List stock orders
-- `POST /admin/stock-orders/create`: Create stock order
-- `POST /admin/stock-orders/<id>/approve`: Approve stock order
-- `POST /admin/stock-orders/<id>/complete`: Complete stock order
+This project is licensed under the MIT License - see the LICENSE file for details. 
