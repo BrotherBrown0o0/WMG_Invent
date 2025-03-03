@@ -1,19 +1,4 @@
-# WMG Inventory Management System
-
-A comprehensive inventory management system built with Flask, designed to help businesses track products, manage stock levels, and process orders efficiently.
-
-## Features
-
-- **User Authentication**: Secure login and registration system with role-based access control
-- **Product Management**: Add, edit, and delete products with detailed information
-- **Order Processing**: Create and manage customer orders
-- **Stock Level Monitoring**: Automatic tracking of inventory levels
-- **Admin Dashboard**: Visualize sales data and inventory metrics
-- **Reorder Automation**: Automatic reorder suggestions when stock is low
-
 ## Project Structure
-
-The project follows a clean, modular structure:
 
 ```
 wmg_invent/
@@ -52,47 +37,62 @@ wmg_invent/
    pip install -r requirements.txt
    ```
 
-4. Set environment variables:
+4. Configure the application:
+   - Create an `.env` file in the root directory with the following content:
    ```
-   set FLASK_APP=run.py  # On Unix/Mac: export FLASK_APP=run.py
-   set FLASK_ENV=development  # On Unix/Mac: export FLASK_ENV=development
+   FLASK_APP=run.py
+   FLASK_ENV=development
    ```
+   - Or set these variables directly in your terminal session if preferred.
 
 5. Initialize the database:
    ```
    python run.py
    ```
 
+6. Install product images:
+   ```
+   # Run the provided script to download all product images
+   python scripts/download_product_images.py
+   ```
+
+   *Note: Alternatively, you can manually download images and place them in `app/static/images/products/` 
+   following the naming convention described in the "Product Images" section below.*
+
 ## Running the Application
 
 Start the development server:
 ```
-flask run
+python run.py
 ```
 
 Access the application at `http://localhost:5000`
 
 ## Testing
 
-Run the test suite:
+Run the tests with the standard Python unittest module:
 ```
 python -m unittest tests/test_app.py
 ```
 
-## User Roles
+## Product Images
 
-- **Regular User**: Can browse products and place orders
-- **Admin**: Can manage inventory and view orders
-- **Site Admin**: Has full access to all features, including user management
+1. Products can be assigned direct image URLs through the `image_url` field when creating or editing products.
 
-## Contributing
+2. For products without a direct URL, the system falls back to matching the product name with corresponding image files in the `app/static/images/products/` directory.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request
+3. The application includes a default mapping between product names and image filenames:
+   ```
+   'Apple iPad Pro 12.9"': 'ipad_pro.jpeg',
+   'MacBook Pro 16"': 'macbook_pro.jpeg',
+   'iPhone 14 Pro': 'iphone_14_pro.jpeg',
+   'Sony WH-1000XM5': 'sony_headphones.jpeg',
+   'Samsung Galaxy Tab S8 Ultra': 'galaxy_tab.jpeg',
+   'Dell XPS 15': 'dell_xps.jpeg',
+   'Google Pixel 7 Pro': 'pixel_7_pro.jpeg',
+   'Bose QuietComfort 45': 'bose_headphones.jpeg'
+   ```
 
-## License
+4. If a product doesn't match any of the above, the system displays a generic `placeholder.png` image.
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+When restoring or setting up the application, make sure to populate the `app/static/images/products/` directory with the appropriate image files to ensure all products display correctly.
