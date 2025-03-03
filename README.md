@@ -15,7 +15,10 @@ wmg_invent/
 ├── tests/                  # Test suite
 ├── config.py               # Configuration settings
 ├── requirements.txt        # Project dependencies
-└── run.py                  # Application entry point
+├── run.py                  # Application entry point
+├── clean_cache.py          # Script to remove Python cache files
+├── clean_cache.bat         # Windows batch script for cache cleaning
+└── clean_cache.sh          # Shell script for cache cleaning on Unix systems
 ```
 
 ## Installation
@@ -74,6 +77,18 @@ Run the tests with the standard Python unittest module:
 ```
 python -m unittest tests/test_app.py
 ```
+
+## Cleaning Cache Files
+
+To remove Python cache files (`__pycache__` directories and `.pyc` files) and ensure a clean environment for development and testing:
+```
+python clean_cache.py
+```
+
+This is useful:
+- Before running tests to ensure a clean test environment
+- After making significant code changes
+- When experiencing unexplained behavior that might be related to cached Python files
 
 ## Product Images
 
